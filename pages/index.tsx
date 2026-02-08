@@ -13,11 +13,10 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from '@mui/material'
-import matter from 'gray-matter'
 import { DocumentMeta } from '../interfaces/document'
 import { FunctionComponent, SyntheticEvent, useState } from 'react'
-import fs from 'fs'
 import Header from '../components/header'
+import { getAllDocuments } from '../lib/documents'
 
 interface IProps {
   docs: DocumentMeta[]
@@ -94,16 +93,7 @@ const Home: FunctionComponent<IProps> = ({ docs }) => {
 export default Home
 
 export async function getStaticProps() {
-  const files = fs.readdirSync('docs')
-  const docs = files
-    .map(file => {
-      const data = fs.readFileSync(`docs/${file}`).toString()
-      return {
-        ...matter(data).data,
-        slug: file.split('.')[0],
-      }
-    })
-    .reverse()
+  const docs = getAllDocuments()
 
   return {
     props: {
