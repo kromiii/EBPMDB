@@ -21,6 +21,7 @@
     - 新たなレビューを投稿する方は、この[レポジトリ](https://github.com/CyberAgentAILab/ebpmdb)をフォークして新たなレビューをコミットしプルリクエストを送ってください。
     - データベースの管理者が内容を精査した上でマージします。
     - 適当なカテゴリがなければ新規で作成してください。
+    - ビルド時に `docs/` 以下の Markdown から `data/documents.sqlite` が自動生成され、画面は SQLite の内容を参照します。
 
 1. レビューへの質問や修正コメントを送る
    - 直接レビューの修正を行う場合は[EBPMDB/docs](https://github.com/CyberAgentAILab/EBPMDB/tree/main/docs)以下のmarkdownファイルに直接修正を行ってプルリクエストを送ってください。データベースの管理者が内容を精査した上でマージします。

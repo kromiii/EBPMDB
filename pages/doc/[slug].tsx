@@ -1,7 +1,5 @@
 import Header from '../../components/header'
 import { FunctionComponent } from 'react'
-import fs from 'fs'
-import matter from 'gray-matter'
 import { DocumentInfo } from '../../interfaces/document'
 import { Container, Typography, Grid, Link } from '@mui/material'
 import Navigation from '../../components/navigation'
@@ -10,6 +8,7 @@ import MarkdownList from '../../components/markdown-list'
 import EvidenceTable from '../../components/evidence-table'
 import Footer from '../../components/footer'
 import { Help } from '@mui/icons-material'
+import { getAllSlugs, getDocumentBySlug } from '../../lib/documents'
 
 interface IProps {
   doc: DocumentInfo
@@ -80,11 +79,9 @@ const Document: FunctionComponent<IProps> = ({ doc }) => {
 }
 
 export async function getStaticPaths() {
-  const files = fs.readdirSync('docs')
-  const paths = files.map(file => ({
-    params: {
-      slug: file.split('.')[0],
-    },
+  const slugs = getAllSlugs()
+  const paths = slugs.map((slug: string) => ({
+    params: { slug },
   }))
 
   return {
@@ -95,15 +92,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ ...ctx }) {
   const { slug } = ctx.params
-  const content = fs.readFileSync(`docs/${slug}.md`).toString()
-  const info = matter(content)
-  const doc = {
-    meta: {
-      ...info.data,
-      slug,
-    },
-    content: info.content,
-  }
+  const doc = getDocumentBySlug(slug)
 
   return {
     props: {
